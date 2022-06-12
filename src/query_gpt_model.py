@@ -4,6 +4,10 @@ import argparse
 import sys
 from os.path import exists
 
+from transformers import GPTJForCausalLM, AutoTokenizer
+import torch
+
+
 if len(sys.argv) > 1:
     txtname = sys.argv[1]
     print(txtname)
@@ -83,6 +87,20 @@ class GPTJ(DefaultGPT):
         self.body = {}
         self.is_online = False
 
+        self.engine = GPTJForCausalLM.from_pretrained("EleutherAI/gpt-j-6B", revision="float16", torch_dtype=torch.float16, low_cpu_mem_usage=True)
+        self.tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
+
+    def setup(self):
+        pass 
+
+    def get_response(self):
+        prompt = self.input_line
+        input_ids = self.tokenizer(prompt, return_tensors="pt").input_ids
+        gen_tokens = self.engine.generate(input_ids, do_sample=True, temperature=0.9, max_length=100,)
+        gen_text = self.tokenizer.batch_decode(gen_tokens)[0]
+        return gen_text
+        
+
 
 class GPT3(DefaultGPT):
     def __init__(self):
@@ -129,6 +147,7 @@ if __name__ == "__main__":
         save.close()
         file.close()
 
+    skip = False
     if exists("../data/" + gpt.file_name):
         saved = open("../data/" + gpt.file_name, 'r')
         x = []
@@ -139,8 +158,15 @@ if __name__ == "__main__":
             elif (len(l) > 1 and len(l[1]) <= 1) or len(l) == 1:
                 if len(l) == 1: l.append("")
                 ## replace l[1]
-                gpt.input_line = l[0]
-                l[1] = gpt.get_response()
+                if not skip:
+                    try:
+                        gpt.input_line = l[0]
+                        l[1] = gpt.get_response()
+                    except KeyboardInterrupt:
+                        l[1] = ""
+                        skip = True
+                else:
+                    l[1] = ""
                 print("num" , l[1])
             x.append([ l[0], l[1] ])
         resave = open("../data/" + gpt.file_name, "w")
