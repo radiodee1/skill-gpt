@@ -182,7 +182,7 @@ if __name__ == "__main__":
                     try:
                         gpt.input_line = l[0]
                         l[1] = gpt.get_response()
-                    except KeyboardInterrupt:
+                    except: # KeyboardInterrupt:
                         l[1] = ""
                         skip = True
                 else:
@@ -191,5 +191,5 @@ if __name__ == "__main__":
             x.append([ l[0], l[1] ])
         resave = open("../data/" + gpt.file_name, "w")
         for l in x:
-            resave.write(l[0] + "\t" + l[1] + "\n")
+            resave.write(l[0].strip() + "\t" + l[1].strip() + "\n")
         resave.close()
