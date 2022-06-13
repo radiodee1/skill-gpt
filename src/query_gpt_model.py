@@ -17,6 +17,7 @@ parser = argparse.ArgumentParser(description='Make tab file from the movie corpu
 parser.add_argument('model', metavar='MODEL', type=str, help='Code word for GPT model. One of several strings ("gpt2", "gptj", "gpt3").')
 parser.add_argument("--tabname", default="tabname.tsv", type=str, help="Output tab file name.")
 parser.add_argument('--length', default=1000, type=int, help="Length, in sentences, of output file.")
+parser.add_argument("--screen", action="store_true", help="Print verbose output to screen.")
 args = parser.parse_args()
 
 class DefaultGPT:
@@ -157,9 +158,9 @@ if __name__ == "__main__":
         j = []
         num = 0
         for l in file:
-            print (l.strip())
+            if args.screen: print (l.strip())
             j.append(l.split("\t")[0])
-            print(j[num])
+            if args.screen: print(j[num])
             save.write(j[num] + "\t" + "\t" +  "\n")
             num += 1 
             if num >= args.length: break
@@ -186,7 +187,7 @@ if __name__ == "__main__":
                         skip = True
                 else:
                     l[1] = ""
-                print(l[0], ">>" , l[1])
+                if args.screen: print(l[0], ">>" , l[1])
             x.append([ l[0], l[1] ])
         resave = open("../data/" + gpt.file_name, "w")
         for l in x:
