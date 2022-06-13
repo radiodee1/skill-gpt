@@ -16,6 +16,8 @@ def minimal_format(text, do_format):
     if len(text.split("!")) > 1:
         text = text.split("!")[0] + "!"
     text = text.strip()
+    text = text.split(" ")[:args.tokens]
+    text = " ".join(text)
     return text
 
 if len(sys.argv) > 1:
@@ -28,6 +30,7 @@ parser.add_argument('basefile', metavar='FILE', type=str, help='Base file from m
 parser.add_argument("--tabname", default="tabname.tsv", type=str, help="Resulting tab file name.")
 parser.add_argument('--length', default=1000, type=int, help="Length, in sentences, of output file.")
 parser.add_argument("--do_format", action="store_true", help="Format or not format.")
+parser.add_argument("--tokens", default=5, type=int, help="Default number of tokens in sentences.")
 args = parser.parse_args()
 
 

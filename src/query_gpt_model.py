@@ -4,7 +4,7 @@ import argparse
 import sys
 from os.path import exists
 
-from transformers import GPTJForCausalLM, AutoTokenizer
+from transformers import GPTJForCausalLM, AutoTokenizer, AutoModelForCausalLM
 import torch
 
 
@@ -75,6 +75,25 @@ class GPT2(DefaultGPT):
         self.body = {}
         self.is_online = False
 
+        self.engine = AutoModelForCausalLM.from_pretrained("gpt2")
+        self.tokenizer = AutoTokenizer.from_pretrained("gpt2")
+
+    def setup(self):
+        pass
+
+    def get_response(self):
+        prompt = self.input_line
+        inputs = self.tokenizer(prompt, return_tensors="pt").input_ids
+        #print(inputs)
+        outputs = self.engine.generate(inputs, do_sample=True, temperature=0.001, max_length=10 )
+        #print(outputs, "<--")
+        gen_text = self.tokenizer.batch_decode(outputs)[0]
+        #print(inputs , "<<--")
+        if gen_text.startswith(prompt):
+            gen_text = gen_text[len(prompt):]
+        gen_text = gen_text.strip()
+        return gen_text
+        
 
 class GPTJ(DefaultGPT):
     def __init__(self):
@@ -96,7 +115,7 @@ class GPTJ(DefaultGPT):
     def get_response(self):
         prompt = self.input_line
         input_ids = self.tokenizer(prompt, return_tensors="pt").input_ids
-        gen_tokens = self.engine.generate(input_ids, do_sample=True, temperature=0.9, max_length=100,)
+        gen_tokens = self.engine.generate(input_ids, do_sample=True, temperature=0.001, max_length=10,)
         gen_text = self.tokenizer.batch_decode(gen_tokens)[0]
         return gen_text
         
@@ -167,7 +186,7 @@ if __name__ == "__main__":
                         skip = True
                 else:
                     l[1] = ""
-                print("num" , l[1])
+                print(l[0], ">>" , l[1])
             x.append([ l[0], l[1] ])
         resave = open("../data/" + gpt.file_name, "w")
         for l in x:
