@@ -4,6 +4,10 @@ import argparse
 import sys
 from os.path import exists
 
+#import os
+import openai 
+from dotenv import dotenv_values
+
 from transformers import GPTJForCausalLM, AutoTokenizer, AutoModelForCausalLM
 import torch
 
@@ -137,6 +141,27 @@ class GPT3(DefaultGPT):
         self.body = {}
         self.is_online = True
 
+        #self.engine =
+        #self.tokenizer = 
+        self.config = dotenv_values("../.env")
+        print(self.config)
+        openai.api_key = self.config["OPENAI_API_KEY"]
+        #self.organization = self.config["OPENAI_ORGANIZATION"]
+
+    def setup(self):
+        pass
+
+    def get_response(self):
+        gen_text = openai.Completion.create(
+            model="text-davinci-002",
+            prompt=self.input_line,
+            max_tokens=5,
+            temperature=0.001
+        )
+        #print(gen_text , "<---")
+        gen_text = gen_text["choices"][0]["text"].replace("\n","").strip()
+        return gen_text
+        
 
 if __name__ == "__main__":
     gpt = DefaultGPT()
@@ -187,7 +212,7 @@ if __name__ == "__main__":
                     try:
                         gpt.input_line = l[0]
                         l[1] = gpt.get_response()
-                    except: # KeyboardInterrupt:
+                    except  KeyboardInterrupt:
                         l[1] = ""
                         skip = True
                 else:

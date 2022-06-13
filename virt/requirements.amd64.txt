@@ -40,10 +40,14 @@ typing_extensions==3.10.0.0
 urllib3==1.26.4 
 wheel==0.36.2 
 zipp==3.4.1
-python-dotenv==0.17.1
+
+python-dotenv
+# ==0.17.1
 
 transformers
 # ==4.11.3
+
+openai
 
 ## 
 ## torch==1.8.1+cpu
