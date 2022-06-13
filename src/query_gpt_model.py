@@ -118,6 +118,10 @@ class GPTJ(DefaultGPT):
         input_ids = self.tokenizer(prompt, return_tensors="pt").input_ids
         gen_tokens = self.engine.generate(input_ids, do_sample=True, temperature=0.001, max_length=10,)
         gen_text = self.tokenizer.batch_decode(gen_tokens)[0]
+         #print(inputs , "<<--")
+        if gen_text.startswith(prompt):
+            gen_text = gen_text[len(prompt):]
+        gen_text = gen_text.strip()
         return gen_text
         
 
@@ -171,6 +175,7 @@ if __name__ == "__main__":
     if exists("../data/" + gpt.file_name):
         saved = open("../data/" + gpt.file_name, 'r')
         x = []
+        num = 0 
         for l in saved:
             l = l.split("\t")
             if len(l) > 1 and len(l[1]) > 1:
@@ -187,8 +192,12 @@ if __name__ == "__main__":
                         skip = True
                 else:
                     l[1] = ""
+                
                 if args.screen: print(l[0], ">>" , l[1])
             x.append([ l[0], l[1] ])
+            num += 1 
+            if num >= args.length: break
+
         resave = open("../data/" + gpt.file_name, "w")
         for l in x:
             resave.write(l[0].strip() + "\t" + l[1].strip() + "\n")
