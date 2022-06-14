@@ -45,7 +45,10 @@ if __name__ == "__main__":
     for m in range(len(x)):
         if args.screen: print(y[m])
         if y[m] > 1:
-            list_output.write(x[m][0].strip() + "\t" + x[m][1].strip() + "\t" + str(y[m]) + "\n")
+            list_output.write(str(m) + "\t" + x[m][0].strip() + "\t" + x[m][1].strip() + "\t" + str(y[m]) + "\n")
             tot += y[m]
     list_output.close()
     print ("total", str(tot) + "/" + str(z))
+    file_name_out_maker = args.tabname.split(".")[0] +  ".maker.tsv"
+    maker_output = open("../data/" + file_name_out_maker, "a")
+    maker_output.write("making " + file_name_out + " = " + str(tot) + "/" + str(z) + "\t" + str(tot) + "\t" + str(z) + "\t" + args.model + "\n")
