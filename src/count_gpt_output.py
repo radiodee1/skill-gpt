@@ -17,7 +17,30 @@ args = parser.parse_args()
 
 if __name__ == "__main__":
     file_name_in =  args.tabname.split('.')[0] + '.' + args.model + ".query.tsv"
+    num = 0
+    x = []
+    y = []
     list_input = open("../data/" + file_name_in, "r")
     for l in list_input:
-        pass 
-    pass
+        line = l.split("\t")
+        x.append(line)
+        y.append(1)
+        num += 1 
+        if num >= args.length: break 
+        
+    list_input.close()
+    print("len of input in lines", len(x))
+    for j in range(len(x)):
+        print("working on line index", j)
+        for k in range(j+1, len(x)):
+            print("compare line index", k)
+            if y[j] != 0 and x[j][1] == x[k][1]:
+                y[j] += 1 
+                y[k] = 0
+
+    file_name_out = args.tabname.split(".")[0] + "." + args.model + ".compare.tsv"
+    list_output = open("../data/" + file_name_out, "w")
+    for m in range(len(x)):
+        print(y[m])
+        list_output.write(x[m][0].strip() + "\t" + x[m][1].strip() + "\t" + str(y[m]) + "\n")
+    list_output.close()
