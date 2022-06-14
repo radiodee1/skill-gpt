@@ -23,6 +23,7 @@ parser.add_argument("--tabname", default="tabname.tsv", type=str, help="Output t
 parser.add_argument('--length', default=1000, type=int, help="Length, in sentences, of output file.")
 parser.add_argument("--screen", action="store_true", help="Print verbose output to screen.")
 parser.add_argument("--crashes", default=5, type=int, help="Number of model crashes before skipping all model inputs.")
+parser.add_argument("--huggingface", default=None, type=str, help="Huggingface model to run in place of gpt2.")
 args = parser.parse_args()
 
 class DefaultGPT:
@@ -57,15 +58,16 @@ class DefaultGPT:
 
 
 class GPT2(DefaultGPT):
-    def __init__(self):
+    def __init__(self, model):
         DefaultGPT.__init__(self)
-        self.model = "gpt2"
+
+        self.model = model #"gpt2"
         self.file_name = args.tabname.split('.')[0] + '.' + self.model + ".query.tsv"
         self.input_line = "Hello there."
         self.is_online = False
 
-        self.engine = AutoModelForCausalLM.from_pretrained("gpt2")
-        self.tokenizer = AutoTokenizer.from_pretrained("gpt2")
+        self.engine = AutoModelForCausalLM.from_pretrained(self.model)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model)
 
     def setup(self):
         pass
@@ -73,11 +75,11 @@ class GPT2(DefaultGPT):
     def get_response(self):
         prompt = self.input_line
         inputs = self.tokenizer(prompt, return_tensors="pt").input_ids
-        #print(inputs)
+        
         outputs = self.engine.generate(inputs, do_sample=True, temperature=0.001, max_length=10, skip_special_tokens=True )
-        #print(outputs, "<--")
+        
         gen_text = self.tokenizer.batch_decode(outputs)[0]
-        #print(inputs , "<<--")
+        
         if gen_text.startswith(prompt):
             gen_text = gen_text[len(prompt):]
         gen_text = gen_text.strip()
@@ -146,7 +148,7 @@ if __name__ == "__main__":
     if args.model == "gpt2":
         print("gpt2 model")
         try:
-            gpt = GPT2()
+            gpt = GPT2("gpt2")
         except:
             skip = True
     elif args.model == "gptj":
@@ -161,6 +163,19 @@ if __name__ == "__main__":
             gpt = GPT3()
         except:
             skip = True
+    elif args.huggingface != None:
+        print("Huggingface model", args.huggingface)
+        try:
+            gpt = GPT2(args.huggingface)
+        except:
+            skip = True
+    else:
+        print(args.model, "model")
+        try:
+            gpt = GPT2(args.model)
+        except:
+            skip = True
+        
 
     gpt.setup()
 
@@ -212,7 +227,7 @@ if __name__ == "__main__":
                 else:
                     l[1] = ""
                 
-                if args.screen: print(l[0], ">>" , l[1])
+                if args.screen: print(num + 1, l[0], ">>" , l[1])
             x.append([ l[0], l[1] ])
             num += 1 
             if num >= args.length: break

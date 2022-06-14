@@ -40,6 +40,7 @@ if __name__ == "__main__":
 
     z = args.length
     tot = 0
+    num = 0
     file_name_out = args.tabname.split(".")[0] + "." + args.model + ".compare.tsv"
     list_output = open("../data/" + file_name_out, "w")
     for m in range(len(x)):
@@ -47,8 +48,9 @@ if __name__ == "__main__":
         if y[m] > 1:
             list_output.write(str(m) + "\t" + x[m][0].strip() + "\t" + x[m][1].strip() + "\t" + str(y[m]) + "\n")
             tot += y[m]
+            num += 1 
     list_output.close()
-    print ("total", str(tot) + "/" + str(z))
+    print ("total =", str(tot) + "/" + str(z), "num =", str(num))
     file_name_out_maker = args.tabname.split(".")[0] +  ".maker.tsv"
     maker_output = open("../data/" + file_name_out_maker, "a")
-    maker_output.write("making " + file_name_out + " = " + str(tot) + "/" + str(z) + "\t" + str(tot) + "\t" + str(z) + "\t" + args.model + "\n")
+    maker_output.write("making " + file_name_out + " = " + str(tot) + "/" + str(z) + "\t" + str(tot) + "\t" + str(z) + "\t" + str(num) + "\t" + args.model + "\n")
