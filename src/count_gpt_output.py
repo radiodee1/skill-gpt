@@ -38,10 +38,14 @@ if __name__ == "__main__":
                 y[j] += 1 
                 y[k] = 0
 
+    z = args.length
+    tot = 0
     file_name_out = args.tabname.split(".")[0] + "." + args.model + ".compare.tsv"
     list_output = open("../data/" + file_name_out, "w")
     for m in range(len(x)):
         if args.screen: print(y[m])
         if y[m] > 1:
             list_output.write(x[m][0].strip() + "\t" + x[m][1].strip() + "\t" + str(y[m]) + "\n")
+            tot += y[m]
     list_output.close()
+    print ("total", str(tot) + "/" + str(z))
