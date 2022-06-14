@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3
 
 from transformers import GPTJForCausalLM, AutoTokenizer
 import torch

@@ -17,11 +17,12 @@ if len(sys.argv) > 1:
     print(txtname)
     print('This first arg should be the code name for the GPT engine.')
 
-parser = argparse.ArgumentParser(description='Make tab file from the movie corpus file.')
+parser = argparse.ArgumentParser(description='Make tab file from the movie corpus file using gpt engines.')
 parser.add_argument('model', metavar='MODEL', type=str, help='Code word for GPT model. One of several strings ("gpt2", "gptj", "gpt3").')
 parser.add_argument("--tabname", default="tabname.tsv", type=str, help="Output tab file name.")
 parser.add_argument('--length', default=1000, type=int, help="Length, in sentences, of output file.")
 parser.add_argument("--screen", action="store_true", help="Print verbose output to screen.")
+parser.add_argument("--crashes", default=5, type=int, help="Number of model crashes before skipping all model inputs.")
 args = parser.parse_args()
 
 class DefaultGPT:
@@ -37,7 +38,7 @@ class DefaultGPT:
 
     def __init__(self):
         self.model = "default"
-        self.file_name = "default"
+        self.file_name = "default.tsv"
         self.input_line = "Hello there."
         self.url = "https://"
         self.header = {}
@@ -141,8 +142,6 @@ class GPT3(DefaultGPT):
         self.body = {}
         self.is_online = True
 
-        #self.engine =
-        #self.tokenizer = 
         self.config = dotenv_values("../.env")
         print(self.config)
         openai.api_key = self.config["OPENAI_API_KEY"]
@@ -164,23 +163,33 @@ class GPT3(DefaultGPT):
         
 
 if __name__ == "__main__":
+    skip = False
     gpt = DefaultGPT()
 
     if args.model == "gpt2":
         print("gpt2 model")
-        gpt = GPT2()
+        try:
+            gpt = GPT2()
+        except:
+            skip = True
     elif args.model == "gptj":
         print("gptj model")
-        gpt = GPTJ()
+        try:
+            gpt = GPTJ()
+        except:
+            skip = True
     elif args.model == "gpt3":
         print("gpt3 model")
-        gpt = GPT3()
+        try:
+            gpt = GPT3()
+        except:
+            skip = True
 
     gpt.setup()
 
     print(gpt.model)
     print(gpt.file_name)
-
+    
     if not exists("../data/" + gpt.file_name):
         save = open("../data/" + gpt.file_name, "w")
         file = open("../data/" + args.tabname, "r")
@@ -196,11 +205,12 @@ if __name__ == "__main__":
         save.close()
         file.close()
 
-    skip = False
+    
     if exists("../data/" + gpt.file_name):
         saved = open("../data/" + gpt.file_name, 'r')
         x = []
-        num = 0 
+        num = 0
+        crash_count = 0 
         for l in saved:
             l = l.split("\t")
             if len(l) > 1 and len(l[1]) > 1:
@@ -215,6 +225,11 @@ if __name__ == "__main__":
                     except  KeyboardInterrupt:
                         l[1] = ""
                         skip = True
+                    except:
+                        l[1] = ""
+                        crash_count += 1 
+                        if crash_count >= args.crashes: 
+                            skip = True
                 else:
                     l[1] = ""
                 
