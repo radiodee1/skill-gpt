@@ -38,7 +38,7 @@ class DefaultGPT:
 
     def __init__(self):
         self.model = "default"
-        self.file_name = args.tabname.split('.')[0] + '.' + self.model + ".query.tsv"
+        self.file_name = args.tabname.split('.')[0] + '.' + args.model + ".query.tsv"
         self.input_line = "Hello there."
         self.url = "https://"
         self.header = {}
@@ -49,26 +49,12 @@ class DefaultGPT:
     def setup(self):
         print ("setup filename " + self.file_name)
 
-    def make_body(self):
-        print (self.body)
-
-    def make_header(self):
-        print(self.header)
-
     def get_response(self):
         if self.model == "default":
             return self.input_line
         else:
             return self.model
 
-    def set_model(self, model):
-        self.model = model
-
-    def set_filename(self, filename):
-        self.file_name = filename
-
-    def set_url(self, new_url):
-        self.url = new_url 
 
 class GPT2(DefaultGPT):
     def __init__(self):
@@ -76,9 +62,6 @@ class GPT2(DefaultGPT):
         self.model = "gpt2"
         self.file_name = args.tabname.split('.')[0] + '.' + self.model + ".query.tsv"
         self.input_line = "Hello there."
-        self.url = "https://"
-        self.header = {}
-        self.body = {}
         self.is_online = False
 
         self.engine = AutoModelForCausalLM.from_pretrained("gpt2")
@@ -91,7 +74,7 @@ class GPT2(DefaultGPT):
         prompt = self.input_line
         inputs = self.tokenizer(prompt, return_tensors="pt").input_ids
         #print(inputs)
-        outputs = self.engine.generate(inputs, do_sample=True, temperature=0.001, max_length=10 )
+        outputs = self.engine.generate(inputs, do_sample=True, temperature=0.001, max_length=10, skip_special_tokens=True )
         #print(outputs, "<--")
         gen_text = self.tokenizer.batch_decode(outputs)[0]
         #print(inputs , "<<--")
@@ -107,9 +90,6 @@ class GPTJ(DefaultGPT):
         self.model = "gptj"
         self.file_name = args.tabname.split('.')[0] + '.' + self.model + ".query.tsv"
         self.input_line = "Hello there."
-        self.url = "https://"
-        self.header = {}
-        self.body = {}
         self.is_online = False
 
         self.engine = GPTJForCausalLM.from_pretrained("EleutherAI/gpt-j-6B", revision="float16", torch_dtype=torch.float16, low_cpu_mem_usage=True)
@@ -137,9 +117,6 @@ class GPT3(DefaultGPT):
         self.model = "gpt3"
         self.file_name = args.tabname.split('.')[0] + '.' + self.model + ".query.tsv"
         self.input_line = "Hello there."
-        self.url = "https://"
-        self.header = {}
-        self.body = {}
         self.is_online = True
 
         self.config = dotenv_values("../.env")
@@ -227,6 +204,7 @@ if __name__ == "__main__":
                         skip = True
                     except:
                         l[1] = ""
+                        if not gpt.is_online: skip = True
                         crash_count += 1 
                         if crash_count >= args.crashes: 
                             skip = True
