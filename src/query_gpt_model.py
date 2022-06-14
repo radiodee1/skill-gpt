@@ -38,7 +38,7 @@ class DefaultGPT:
 
     def __init__(self):
         self.model = "default"
-        self.file_name = "default.tsv"
+        self.file_name = args.tabname.split('.')[0] + '.' + self.model + ".query.tsv"
         self.input_line = "Hello there."
         self.url = "https://"
         self.header = {}
