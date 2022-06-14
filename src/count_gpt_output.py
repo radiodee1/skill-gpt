@@ -29,18 +29,19 @@ if __name__ == "__main__":
         if num >= args.length: break 
         
     list_input.close()
-    print("len of input in lines", len(x))
+    if args.screen: print("len of input in lines", len(x))
     for j in range(len(x)):
-        print("working on line index", j)
+        if args.screen: print("working on line index", j)
         for k in range(j+1, len(x)):
-            print("compare line index", k)
-            if y[j] != 0 and x[j][1] == x[k][1]:
+            if args.screen: print("compare line index", k)
+            if y[j] != 0 and x[j][1].strip() == x[k][1].strip():
                 y[j] += 1 
                 y[k] = 0
 
     file_name_out = args.tabname.split(".")[0] + "." + args.model + ".compare.tsv"
     list_output = open("../data/" + file_name_out, "w")
     for m in range(len(x)):
-        print(y[m])
-        list_output.write(x[m][0].strip() + "\t" + x[m][1].strip() + "\t" + str(y[m]) + "\n")
+        if args.screen: print(y[m])
+        if y[m] > 1:
+            list_output.write(x[m][0].strip() + "\t" + x[m][1].strip() + "\t" + str(y[m]) + "\n")
     list_output.close()
