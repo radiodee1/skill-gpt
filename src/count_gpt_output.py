@@ -53,4 +53,4 @@ if __name__ == "__main__":
     print ("total =", str(tot) + "/" + str(z), "num =", str(num))
     file_name_out_maker = args.tabname.split(".")[0] +  ".maker.tsv"
     maker_output = open("../data/" + file_name_out_maker, "a")
-    maker_output.write("making " + file_name_out + " = " + str(tot) + "/" + str(z) + "\t" + str(tot) + "\t" + str(z) + "\t" + str(num) + "\t" + args.model + "\n")
+    maker_output.write( str(tot) + "/" + str(z) + "\t" + str(tot) + "\t" + str(z) + "\t" + str(num) + "\t" + args.model + "\t" + file_name_out + " = " + str(tot) + "/" + str(z) + "\n" )

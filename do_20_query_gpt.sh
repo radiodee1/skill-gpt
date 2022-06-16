@@ -2,10 +2,14 @@ cd ./src/
 
 ./query_gpt_model.py gpt2 --screen 
 
-#./query_gpt_model.py gpt3 --screen
+#./query_gpt_model.py gpt2-small --screen ## no such thing
 
-#./query_gpt_model.py gpt2-medium --screen
+./query_gpt_model.py gpt2-medium --screen
 
 ./query_gpt_model.py gpt2-large --screen
 
-echo "This script only runs the gpt2 test."
+./query_gpt_model.py gpt2-xl --screen
+
+#./query_gpt_model.py gpt3 --screen
+
+echo "This script only runs some of the gpt tests."
