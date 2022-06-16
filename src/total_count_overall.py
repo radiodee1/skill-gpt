@@ -33,22 +33,24 @@ if __name__ == "__main__":
             if args.num_repeats == -1: repeats += 1 
             for j in file:
                 jj = j.split("\t")
-                engine_record.append([i, jj[2].strip(), jj[3].strip(), 1 ])
-                if args.screen: print(i,jj[2].strip(), jj[3].strip())
+                engine_record.append([i, jj[2].strip(), int(jj[3].strip()), 1 ])
+                if args.screen: print(i, jj[2].strip(), jj[3].strip())
                 pass 
             file.close()
     for k in range(len(engine_record)):
         for m in range(k + 1, len(engine_record)):
-            print(k,m)
+            #print(k,m)
             if engine_record[k][3] != 0 and engine_record[k][1] == engine_record[m][1]:
                 engine_record[k][3] += 1 
                 engine_record[m][3] = 0
+                engine_record[k][2] += engine_record[m][2]
                 z += 1 
                 
-        pass 
+        pass
+    print("---")
     for k in range(len(engine_record)):
         if engine_record[k][3] >= repeats:
-            engine_visual.append([ engine_record[k][3], engine_record[k][1] ])
-            print(engine_record[k][3], engine_record[k][1])
+            engine_visual.append([ engine_record[k][3], engine_record[k][1], engine_record[k][2] ])
+            print(engine_record[k][3], engine_record[k][1], engine_record[k][2])
     print(len(engine_visual))
 
