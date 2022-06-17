@@ -51,6 +51,8 @@ openai
 
 pipeline-ai
 
+#pipeline
+
 ## 
 ## torch==1.8.1+cpu
 ## install torch from url below

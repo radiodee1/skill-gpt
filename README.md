@@ -7,5 +7,10 @@ you need an environment file, called '.env'. It should contain 'OPENAI_API_KEY' 
 
 ```
 OPENAI_API_KEY=abcd...
-#no other contents at this writing
+# this is for openai GPT-3
+
+PIPELINE_API_KEY=abcd...
+PIPELINE_MODEL_KEY=abcd...
+# this is for mystic.ai GPT-J
+
 ```
