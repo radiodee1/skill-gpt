@@ -11,7 +11,7 @@ from dotenv import dotenv_values
 from transformers import GPTJForCausalLM, AutoTokenizer, AutoModelForCausalLM
 import torch
 
-from pipeline import   PipelineCloud
+from pipeline import PipelineCloud
 
 if len(sys.argv) > 1:
     txtname = sys.argv[1]
@@ -114,9 +114,9 @@ class GPTJ(DefaultGPT):
             gen_tokens = self.engine.generate(input_ids, do_sample=True, temperature=0.001, max_length=10,)
             gen_text = self.tokenizer.batch_decode(gen_tokens)[0]
         else:
-            print("gptj <<")
+            #print("gptj <<")
             run = self.api.run_pipeline(
-                self.config["PIPELINE_MODEL_KEY"],
+                self.config["PIPELINE_MODEL_KEY_GPTJ"],
                 [
                     prompt,
                     {

@@ -42,15 +42,26 @@ if __name__ == "__main__":
     tot = 0
     num = 0
     file_name_out = args.tabname.split(".")[0] + "." + args.model + ".compare.tsv"
+    file_name_out_descriptive = args.tabname.split(".")[0] + "." + args.model + ".compare.descriptive.tsv"
+    descriptive_output = open("../data/" + file_name_out_descriptive, "w")
     list_output = open("../data/" + file_name_out, "w")
     for m in range(len(x)):
         if args.screen: print(y[m])
         if y[m] > 1:
             list_output.write(str(m) + "\t" + x[m][0].strip() + "\t" + x[m][1].strip() + "\t" + str(y[m]) + "\n")
+            descriptive_output.write("index-of-output:\t" + str(m) + 
+                    "\tactual-response:\t" + x[m][1].strip() + 
+                    "\tnumber-of-repeats:\t" + str(y[m])+ "\n")
             tot += y[m]
             num += 1 
     list_output.close()
-    print ("total =", str(tot) + "/" + str(z), "num =", str(num))
+    descriptive_output.close()
+    print ("total covered =", str(tot) + "/" + str(z), ", num special answers =", str(num))
     file_name_out_maker = args.tabname.split(".")[0] +  ".maker.tsv"
     maker_output = open("../data/" + file_name_out_maker, "a")
-    maker_output.write( str(tot) + "/" + str(z) + "\t" + str(tot) + "\t" + str(z) + "\t" + str(num) + "\t" + args.model + "\t" + file_name_out + " = " + str(tot) + "/" + str(z) + "\n" )
+    maker_output.write("percent-of-input-covered:\t" + str(tot) + "/" + str(z) + 
+            "\tnumber-of-inputs-covered:\t" + str(tot) + 
+            "\tnumber-of-tests:\t" + str(z) + 
+            "\tnumber-of-special-replies:\t" + str(num) + 
+            "\tmodel-name:\t" + args.model + 
+            "\t" + file_name_out + " = " + str(tot) + "/" + str(z) + "\n" )

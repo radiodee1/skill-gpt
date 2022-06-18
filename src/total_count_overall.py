@@ -60,5 +60,7 @@ if __name__ == "__main__":
     print(file_name_out)
     save = open("../data/"+ file_name_out, "w")
     for n in engine_visual:
-        save.write(str(n[0]) + "\t" + str(n[1]) + "\t" + str(n[2]) + "\n")
+        save.write("number-of-engines:\t" + str(n[0]) + 
+                "\tactual-utterance:\t" + str(n[1]) + 
+                "\tnumber-of-repeats:\t" + str(n[2]) + "\n")
     save.close()
