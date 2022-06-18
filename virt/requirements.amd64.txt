@@ -49,7 +49,7 @@ transformers
 
 openai
 
-pipeline-ai
+#pipeline-ai
 
 #pipeline
 

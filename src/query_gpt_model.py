@@ -3,20 +3,26 @@
 import argparse
 import sys
 from os.path import exists
+import requests
+import json 
 
-#import os
 import openai 
 from dotenv import dotenv_values
 
 from transformers import GPTJForCausalLM, AutoTokenizer, AutoModelForCausalLM
 import torch
 
-from pipeline import PipelineCloud
+try:
+    from pipeline import PipelineCloud
+except:
+    pass 
 
 if len(sys.argv) > 1:
     txtname = sys.argv[1]
     print(txtname)
     print('This first arg should be the code name for the GPT engine.')
+    print("examples: gpt2, gpt2-medium, gpt2-large, gpt2-xl,")
+    print("    gptj, gpt3, gptj-pipeline")
 
 parser = argparse.ArgumentParser(description='Make tab file from the movie corpus file using gpt engines.')
 parser.add_argument('model', metavar='MODEL', type=str, help='Code word for GPT model. One of several strings ("gpt2", "gptj", "gpt3").')
@@ -137,6 +143,51 @@ class GPTJ(DefaultGPT):
         return gen_text
         
 
+class GPTPipeline(DefaultGPT):
+    def __init__(self, model):
+        DefaultGPT.__init__(self)
+        self.model = model
+        self.file_name = args.tabname.split('.')[0] + '.' + args.model + ".query.tsv"
+        self.input_line = "Hello there."
+        self.is_online = True
+
+        self.config = dotenv_values("../.env")
+        #print(self.config)
+        self.url = 'https://api.pipeline.ai/v2/runs'
+    def setup(self):
+        pass
+
+    def get_response(self):
+        prompt = self.input_line
+        self.payload = {
+                    "pipeline_id": self.model,
+                    "blocking": False,
+                    "compute_type": "gpu",
+                    "data": [
+                            prompt,
+                            {
+                                "response_length": 5, 
+                                "include_input": False, 
+                                "temperature": 0.00001, 
+                                #"top_k": 5
+                                }
+                        ]
+                }
+
+        self.header = {
+                    "Authorization": "Bearer " + self.config["PIPELINE_API_KEY"],
+                    "Content-Type": "application/json"
+                }
+        gen_text = requests.post(self.url, json=self.payload, headers=self.header)
+        gen_text = gen_text.text
+        gen_text = json.loads(gen_text)
+        gen_text = gen_text["result_preview"][0][0].strip()
+        #print(gen_text , "<---")
+        if gen_text.startswith(prompt):
+            gen_text = gen_text[len(prompt):]
+        gen_text = gen_text.strip()
+        return gen_text
+  
 
 class GPT3(DefaultGPT):
     def __init__(self):
@@ -188,6 +239,13 @@ if __name__ == "__main__":
             gpt = GPT3()
         except:
             skip = True
+    elif args.model == "gptj-pipeline":
+        #print("pipeline")
+        try:
+            config = dotenv_values("../.env")["PIPELINE_MODEL_KEY_GPTJ"]
+            gpt = GPTPipeline(config)
+        except:
+            skip = True
     elif args.huggingface != None:
         print("Huggingface model", args.huggingface)
         try:
@@ -204,7 +262,7 @@ if __name__ == "__main__":
 
     gpt.setup()
 
-    print(gpt.model)
+    #print(gpt.model)
     print(gpt.file_name)
     
     if not exists("../data/" + gpt.file_name):
