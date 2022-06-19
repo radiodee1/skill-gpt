@@ -8,7 +8,11 @@ cd ./src/
 
 ./query_gpt_model.py gpt2-xl --screen
 
+echo "The gptj-pipeline gpt test takes approximately one hour."
+
 ./query_gpt_model.py gptj-pipeline --screen
+
+echo "The gpt3 test takes longer than the gpt2 tests, possibly 40 minutes."
 
 ./query_gpt_model.py gpt3 --screen
 
