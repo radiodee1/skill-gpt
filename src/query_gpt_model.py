@@ -22,7 +22,8 @@ if len(sys.argv) > 1:
     print(txtname)
     print('This first arg should be the code name for the GPT engine.')
     print("examples: gpt2, gpt2-medium, gpt2-large, gpt2-xl,")
-    print("    gptj, gpt3, gptj-pipeline")
+    print("    gptj, gptj-pipeline, gpt3, gpt3-babbage, gpt3-curie")
+    print()
 
 parser = argparse.ArgumentParser(description='Make tab file from the movie corpus file using gpt engines.')
 parser.add_argument('model', metavar='MODEL', type=str, help='Code word for GPT model. One of several strings ("gpt2", "gptj", "gpt3").')
