@@ -4,6 +4,7 @@ gpt2-medium,355M,WebText,40G
 gpt2-large,774M,WebText,40G 
 gpt2-xl,1.5B,WebText,40G 
 gpt3-babbage,1.3B,CommonCrawl,240T 
-gptj,6B,ThePile,800G 
+gptj-pipeline,6B,ThePile,800G 
 gpt3-curie,6.7B,CommonCrawl,240T 
-gpt3-davinci,175B,CommonCrawl,240T 
+gpt3-davinci,175B,CommonCrawl,240T
+gpt3,175B,CommonCrawl,240T 
