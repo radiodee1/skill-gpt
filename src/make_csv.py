@@ -27,7 +27,7 @@ if __name__ == "__main__":
         files = open(data_name ,"r")
         for i in files:
             ii = i.split("\t")
-            ii = [x.strip() for x in ii]
+            ii = [xx.strip() for xx in ii]
             x.append(ii)
         files.close()
     details_name = "../csv/details.csv"
@@ -35,7 +35,7 @@ if __name__ == "__main__":
         files = open(details_name, "r")
         for i in files:
             ii = i.split(",")
-            ii = [x.strip() for x in ii]
+            ii = [xx.strip() for xx in ii]
             y.append(ii)
         files.close()
     for i in y:
@@ -45,4 +45,9 @@ if __name__ == "__main__":
                 print(ii)
                 z.append(ii)
         #print(i)
+    output_name = "../csv/ouput.csv"
+    files = open(output_name, 'w')
+    for i in z:
+        files.write(','.join(i) + "\n")
+    files.close()
     pass 
