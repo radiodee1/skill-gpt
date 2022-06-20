@@ -32,8 +32,11 @@ parser.add_argument('--length', default=1000, type=int, help="Length, in sentenc
 parser.add_argument("--screen", action="store_true", help="Print verbose output to screen.")
 parser.add_argument("--crashes", default=5, type=int, help="Number of model crashes before skipping all model inputs.")
 parser.add_argument("--huggingface", default=None, type=str, help="Huggingface model to run in place of gpt2.")
-parser.add_argument("--pipeline", action="store_true", help="Use online service for GPTJ.")
+#parser.add_argument("--pipeline", action="store_true", help="Use online service for GPTJ.")
 args = parser.parse_args()
+
+if not args.tabname.endswith(".tsv"):
+    args.tabname += ".tsv"
 
 class DefaultGPT:
     
@@ -102,13 +105,10 @@ class GPTJ(DefaultGPT):
         self.file_name = args.tabname.split('.')[0] + '.' + self.model + ".query.tsv"
         self.input_line = "Hello there."
         self.is_online = False
-        if not args.pipeline:
-            self.engine = GPTJForCausalLM.from_pretrained("EleutherAI/gpt-j-6B", revision="float16", torch_dtype=torch.float16, low_cpu_mem_usage=True)
-            self.tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
-        else:
-            self.config = dotenv_values("../.env")
-            self.api = PipelineCloud(token=self.config["PIPELINE_API_KEY"])
-            self.is_online = True
+        self.engine = GPTJForCausalLM.from_pretrained("EleutherAI/gpt-j-6B", revision="float16", torch_dtype=torch.float16, low_cpu_mem_usage=True)
+        self.tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
+        #else:
+         
 
     def setup(self):
         pass 
@@ -116,27 +116,9 @@ class GPTJ(DefaultGPT):
     def get_response(self):
         prompt = self.input_line
 
-        if not args.pipeline:
-            input_ids = self.tokenizer(prompt, return_tensors="pt").input_ids
-            gen_tokens = self.engine.generate(input_ids, do_sample=True, temperature=0.001, max_length=10,)
-            gen_text = self.tokenizer.batch_decode(gen_tokens)[0]
-        else:
-            #print("gptj <<")
-            run = self.api.run_pipeline(
-                self.config["PIPELINE_MODEL_KEY_GPTJ"],
-                [
-                    prompt,
-                    {
-                        "response_length": 5,  # how many new tokens to generate
-                        "include_input": False,  # set to True if you want the response to contain your input
-                        "temperature": 0.001,
-                        "top_k": 50
-                        # most params from the transformers library "generate" function are supported
-                    },
-                ],
-            )
-            gen_text = run["result_preview"]
-            pass 
+        input_ids = self.tokenizer(prompt, return_tensors="pt").input_ids
+        gen_tokens = self.engine.generate(input_ids, do_sample=True, temperature=0.001, max_length=10,)
+        gen_text = self.tokenizer.batch_decode(gen_tokens)[0]
         
         if gen_text.startswith(prompt):
             gen_text = gen_text[len(prompt):]

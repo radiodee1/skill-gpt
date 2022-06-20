@@ -33,6 +33,8 @@ parser.add_argument("--do_format", action="store_true", help="Format or not form
 parser.add_argument("--tokens", default=5, type=int, help="Default number of tokens in sentences.")
 args = parser.parse_args()
 
+if not args.tabname.endswith(".tsv"):
+    args.tabname += ".tsv"
 
 if __name__ == "__main__":
     l = []
