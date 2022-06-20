@@ -12,6 +12,8 @@ cd src
 
 ./count_gpt_output.py gptj-pipeline --screen
 
+./count_gpt_output.py gpt3-curie --screen
+
 ./count_gpt_output.py gpt3 --screen
 
 ./total_count_overall.py --screen

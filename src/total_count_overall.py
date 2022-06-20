@@ -10,7 +10,7 @@ if len(sys.argv) > 1:
     print('This first arg should be the code name for the GPT engine.')
 
 parser = argparse.ArgumentParser(description='Make tab file from the movie corpus file using gpt engines.')
-parser.add_argument('--model_list', metavar='MODEL', default="gpt2,gpt2-medium,gpt2-large,gpt2-xl,gptj-pipeline,gpt3" ,type=str, help='Code word GPT model list. Series of several strings ("gpt2", "gptj", "gpt3").')
+parser.add_argument('--model_list', metavar='MODEL', default="gpt2,gpt2-medium,gpt2-large,gpt2-xl,gptj-pipeline,gpt3-curie,gpt3" ,type=str, help='Code word GPT model list. Series of several strings ("gpt2", "gptj", "gpt3").')
 parser.add_argument("--tabname", default="tabname.tsv", type=str, help="Output tab file name.")
 #parser.add_argument('--length', default=1000, type=int, help="Length, in sentences, of output file.")
 parser.add_argument("--screen", action="store_true", help="Print verbose output to screen.")

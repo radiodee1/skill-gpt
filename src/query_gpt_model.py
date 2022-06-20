@@ -243,7 +243,7 @@ if __name__ == "__main__":
             gpt = GPT2(args.huggingface)
         except:
             skip = True
-    else:
+    elif args.model.startswith("gpt2-"):
         print(args.model, "model")
         try:
             gpt = GPT2(args.model)
