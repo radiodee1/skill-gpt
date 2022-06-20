@@ -190,15 +190,15 @@ class GPTPipeline(DefaultGPT):
   
 
 class GPT3(DefaultGPT):
-    def __init__(self):
+    def __init__(self, model):
         DefaultGPT.__init__(self)
-        self.model = "gpt3"
-        self.file_name = args.tabname.split('.')[0] + '.' + self.model + ".query.tsv"
+        self.model = model #"gpt3"
+        self.file_name = args.tabname.split('.')[0] + '.' + args.model + ".query.tsv"
         self.input_line = "Hello there."
         self.is_online = True
 
         self.config = dotenv_values("../.env")
-        print(self.config)
+        #print(self.config)
         openai.api_key = self.config["OPENAI_API_KEY"]
         #self.organization = self.config["OPENAI_ORGANIZATION"]
 
@@ -207,10 +207,10 @@ class GPT3(DefaultGPT):
 
     def get_response(self):
         gen_text = openai.Completion.create(
-            model="text-davinci-002",
+            model= self.model, #"text-davinci-002",
             prompt=self.input_line,
             max_tokens=5,
-            temperature=0.001
+            temperature=0.0001
         )
         #print(gen_text , "<---")
         gen_text = gen_text["choices"][0]["text"].replace("\n","").strip()
@@ -236,7 +236,19 @@ if __name__ == "__main__":
     elif args.model == "gpt3":
         print("gpt3 model")
         try:
-            gpt = GPT3()
+            gpt = GPT3("text-davinci-002")
+        except:
+            skip = True
+    elif args.model == "gpt3-curie":
+        print("gpt3-curie")
+        try:
+            gpt = GPT3("text-curie-001")
+        except:
+            skip = True
+    elif args.model == "gpt3-babbage":
+        print("gpt3-babbage")
+        try:
+            gpt = GPT3("text-babbage-001")
         except:
             skip = True
     elif args.model == "gptj-pipeline":
