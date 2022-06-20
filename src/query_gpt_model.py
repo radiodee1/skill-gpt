@@ -12,10 +12,6 @@ from dotenv import dotenv_values
 from transformers import GPTJForCausalLM, AutoTokenizer, AutoModelForCausalLM
 import torch
 
-try:
-    from pipeline import PipelineCloud
-except:
-    pass 
 
 if len(sys.argv) > 1:
     txtname = sys.argv[1]
