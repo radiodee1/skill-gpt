@@ -8,6 +8,7 @@ import json
 
 import openai 
 from dotenv import dotenv_values
+from requests.api import options
 
 from transformers import GPTJForCausalLM, AutoTokenizer, AutoModelForCausalLM
 import torch
@@ -28,8 +29,9 @@ parser.add_argument('--length', default=1000, type=int, help="Length, in sentenc
 parser.add_argument("--screen", action="store_true", help="Print verbose output to screen.")
 parser.add_argument("--crashes", default=5, type=int, help="Number of model crashes before skipping all model inputs.")
 parser.add_argument("--huggingface", default=None, type=str, help="Huggingface model to run in place of gpt2.")
-#parser.add_argument("--pipeline", action="store_true", help="Use online service for GPTJ.")
+parser.add_argument("--online", action="store_true", help="Use online service for GPT Huggingface.")
 args = parser.parse_args()
+
 
 if not args.tabname.endswith(".tsv"):
     args.tabname += ".tsv"
@@ -70,7 +72,7 @@ class GPT2(DefaultGPT):
         DefaultGPT.__init__(self)
 
         self.model = model #"gpt2"
-        self.file_name = args.tabname.split('.')[0] + '.' + self.model + ".query.tsv"
+        self.file_name = args.tabname.split('.')[0] + '.' + self.model.replace("/", ".") + ".query.tsv"
         self.input_line = "Hello there."
         self.is_online = False
 
@@ -194,6 +196,34 @@ class GPT3(DefaultGPT):
         #print(gen_text , "<---")
         gen_text = gen_text["choices"][0]["text"].replace("\n","").strip()
         return gen_text
+
+class HFOnline(DefaultGPT):
+    def __init__(self, model):
+        DefaultGPT.__init__(self)
+        self.model = model #"gpt3"
+        self.file_name = args.tabname.split('.')[0] + '.' + self.model.replace("/",".") + ".query.tsv"
+        self.input_line = "Hello there."
+        self.is_online = True
+
+        self.API_URL = "https://api-inference.huggingface.co/models/" + self.model
+        self.config = dotenv_values("../.env")
+        #print(self.config)
+        #openai.api_key = self.config["OPENAI_API_KEY"]
+        self.bearer = self.config["HF_BEARER"]
+        self.headers = {"Authorization": "Bearer " + self.bearer}
+        #print(self.bearer)
+
+    def setup(self):
+        pass
+
+    def get_response(self):
+        payload = { "inputs": self.input_line, config : {"max_length": 5 , "temperature": 0.00001}}
+        response = requests.post(self.API_URL, headers=self.headers, json=payload)
+	    #return response.json()
+
+        #print(response.json() , "<---")
+        gen_text = response.json()[0]["generated_text"].replace("\n","").strip()
+        return gen_text
         
 
 if __name__ == "__main__":
@@ -249,7 +279,19 @@ if __name__ == "__main__":
             gpt = GPT2(args.model)
         except:
             skip = True
-        
+    elif args.online is False:
+        print(args.model, "model using GPT2 framework and Huggingface")
+        try:
+            gpt = GPT2(args.model)
+        except:
+            skip = True
+    else:
+        print(args.model, "Huggingface online")
+        try:
+            gpt = HFOnline(args.model)
+        except:
+            skip = True 
+
 
     gpt.setup()
 
