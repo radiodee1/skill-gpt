@@ -7,7 +7,7 @@ from os.path import exists
 if len(sys.argv) > 1:
     txtname = sys.argv[1]
     print(txtname)
-    print('This first arg should be the code name for the GPT engine.')
+    #print('This first arg should be the code name for the GPT engine.')
 
 parser = argparse.ArgumentParser(description='Make tab file from the movie corpus file using gpt engines.')
 parser.add_argument('--model_list', metavar='MODEL', default="gpt2,gpt2-medium,gpt2-large,gpt2-xl,gptj-pipeline,gpt3-curie,gpt3" ,type=str, help='Code word GPT model list. Series of several strings ("gpt2", "gptj", "gpt3").')
@@ -31,7 +31,7 @@ if __name__ == "__main__":
         file_name_in =  args.tabname.split('.')[0] + '.' + ii + ".compare.tsv"
         if exists("../data/" + file_name_in):
             file_name_out += ii + "_"
-            file = open("../data/" + file_name_in, "r")
+            file = open("../data/" + file_name_in.replace("/","."), "r")
             if args.num_repeats == -1: repeats += 1 
             for j in file:
                 jj = j.split("\t")
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     file_name_out += str(len(engine_visual)) + ".totals.tsv"
     print(file_name_out)
-    save = open("../data/"+ file_name_out, "w")
+    save = open("../data/"+ file_name_out.replace("/","."), "w")
     for n in engine_visual:
         save.write("number-of-engines:\t" + str(n[0]) + 
                 "\tactual-utterance:\t" + str(n[1]) + 

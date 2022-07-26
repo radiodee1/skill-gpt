@@ -1,9 +1,12 @@
 cd ./src/ 
 
-echo $@
+#echo $@
 
 if [ $1 == "--test" ]; then
-    echo test 
+./query_gpt_model.py EleutherAI/gpt-neo-2.7B --screen --online
+
+echo test 
+
 fi
 
 
@@ -32,11 +35,11 @@ fi
 if [ $1 == "--safe" ]; then
 
 echo EleutherAI/gpt-neo-125M 
-#./query_gpt_model.py EleutherAI/gpt-neo-125M --screen
+./query_gpt_model.py EleutherAI/gpt-neo-125M --screen
 
 ## 1.3B
 echo EleutherAI/gpt-neo-1.3B
-#./query_gpt_model.py EleutherAI/gpt-neo-1.3B --screen
+./query_gpt_model.py EleutherAI/gpt-neo-1.3B --screen
 
 ## 2.7B
 echo EleutherAI/gpt-neo-2.7B

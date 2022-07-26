@@ -97,14 +97,14 @@ class GPT2(DefaultGPT):
         
 
 class GPTJ(DefaultGPT):
-    def __init__(self):
+    def __init__(self, model):
         DefaultGPT.__init__(self)
-        self.model = "gptj"
-        self.file_name = args.tabname.split('.')[0] + '.' + self.model + ".query.tsv"
+        self.model = model # "gptj"
+        self.file_name = args.tabname.split('.')[0] + '.' + self.model.replace("/",".") + ".query.tsv"
         self.input_line = "Hello there."
         self.is_online = False
-        self.engine = GPTJForCausalLM.from_pretrained("EleutherAI/gpt-j-6B", revision="float16", torch_dtype=torch.float16, low_cpu_mem_usage=True)
-        self.tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-j-6B")
+        self.engine = GPTJForCausalLM.from_pretrained(self.model, revision="float16", torch_dtype=torch.float16, low_cpu_mem_usage=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model)
         #else:
          
 
@@ -217,12 +217,16 @@ class HFOnline(DefaultGPT):
         pass
 
     def get_response(self):
-        payload = { "inputs": self.input_line, config : {"max_length": 5 , "temperature": 0.00001}}
+        payload = { "inputs": self.input_line } #, config : {"max_length": 5 , "temperature": 0.00001}}
         response = requests.post(self.API_URL, headers=self.headers, json=payload)
 	    #return response.json()
 
         #print(response.json() , "<---")
         gen_text = response.json()[0]["generated_text"].replace("\n","").strip()
+        if gen_text.startswith(self.input_line):
+            gen_text = gen_text[len(self.input_line):]
+        gen_text = gen_text.strip()
+        
         return gen_text
         
 
@@ -239,7 +243,7 @@ if __name__ == "__main__":
     elif args.model == "gptj":
         print("gptj model")
         #try:
-        gpt = GPTJ()
+        gpt = GPTJ("EleutherAI/gpt-j-6B")
         #except:
         #    skip = True
     elif args.model == "gpt3":

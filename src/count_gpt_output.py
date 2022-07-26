@@ -20,7 +20,7 @@ if __name__ == "__main__":
     num = 0
     x = []
     y = []
-    list_input = open("../data/" + file_name_in, "r")
+    list_input = open("../data/" + file_name_in.replace("/","."), "r")
     for l in list_input:
         line = l.split("\t")
         x.append(line)
@@ -43,8 +43,8 @@ if __name__ == "__main__":
     num = 0
     file_name_out = args.tabname.split(".")[0] + "." + args.model + ".compare.tsv"
     file_name_out_descriptive = args.tabname.split(".")[0] + "." + args.model + ".compare.descriptive.tsv"
-    descriptive_output = open("../data/" + file_name_out_descriptive, "w")
-    list_output = open("../data/" + file_name_out, "w")
+    descriptive_output = open("../data/" + file_name_out_descriptive.replace("/","."), "w")
+    list_output = open("../data/" + file_name_out.replace("/","."), "w")
     for m in range(len(x)):
         if args.screen: print(y[m])
         if y[m] > 1:
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     descriptive_output.close()
     print ("total covered =", str(tot) + "/" + str(z), ", num special answers =", str(num))
     file_name_out_maker = args.tabname.split(".")[0] +  ".maker.tsv"
-    maker_output = open("../data/" + file_name_out_maker, "a")
+    maker_output = open("../data/" + file_name_out_maker.replace("/","."), "a")
     maker_output.write("percent-of-input-covered:\t" + str(tot) + "/" + str(z) + 
             "\tnumber-of-inputs-covered:\t" + str(tot) + 
             "\tnumber-of-tests:\t" + str(z) + 

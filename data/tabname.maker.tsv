@@ -1,7 +1,2 @@
-percent-of-input-covered:	395/1000	number-of-inputs-covered:	395	number-of-tests:	1000	number-of-special-replies:	80	model-name:	gpt2	tabname.gpt2.compare.tsv = 395/1000
-percent-of-input-covered:	322/1000	number-of-inputs-covered:	322	number-of-tests:	1000	number-of-special-replies:	84	model-name:	gpt2-medium	tabname.gpt2-medium.compare.tsv = 322/1000
-percent-of-input-covered:	333/1000	number-of-inputs-covered:	333	number-of-tests:	1000	number-of-special-replies:	81	model-name:	gpt2-large	tabname.gpt2-large.compare.tsv = 333/1000
-percent-of-input-covered:	324/1000	number-of-inputs-covered:	324	number-of-tests:	1000	number-of-special-replies:	82	model-name:	gpt2-xl	tabname.gpt2-xl.compare.tsv = 324/1000
-percent-of-input-covered:	348/1000	number-of-inputs-covered:	348	number-of-tests:	1000	number-of-special-replies:	66	model-name:	gptj-pipeline	tabname.gptj-pipeline.compare.tsv = 348/1000
-percent-of-input-covered:	291/1000	number-of-inputs-covered:	291	number-of-tests:	1000	number-of-special-replies:	62	model-name:	gpt3-curie	tabname.gpt3-curie.compare.tsv = 291/1000
-percent-of-input-covered:	316/1000	number-of-inputs-covered:	316	number-of-tests:	1000	number-of-special-replies:	65	model-name:	gpt3	tabname.gpt3.compare.tsv = 316/1000
+percent-of-input-covered:	436/1000	number-of-inputs-covered:	436	number-of-tests:	1000	number-of-special-replies:	77	model-name:	EleutherAI/gpt-neo-125M	tabname.EleutherAI/gpt-neo-125M.compare.tsv = 436/1000
+percent-of-input-covered:	359/1000	number-of-inputs-covered:	359	number-of-tests:	1000	number-of-special-replies:	73	model-name:	EleutherAI/gpt-neo-1.3B	tabname.EleutherAI/gpt-neo-1.3B.compare.tsv = 359/1000
