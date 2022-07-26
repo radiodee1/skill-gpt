@@ -38,15 +38,15 @@ fi
 if [ $1 == "--safe" ]; then
 
 echo EleutherAI/gpt-neo-125M 
-./query_gpt_model.py EleutherAI/gpt-neo-125M --screen
+./query_gpt_model.py EleutherAI/gpt-neo-125M --screen --tabname safe 
 
 ## 1.3B
 echo EleutherAI/gpt-neo-1.3B
-./query_gpt_model.py EleutherAI/gpt-neo-1.3B --screen
+./query_gpt_model.py EleutherAI/gpt-neo-1.3B --screen --tabname safe
 
 ## 2.7B
 echo EleutherAI/gpt-neo-2.7B
-./query_gpt_model.py EleutherAI/gpt-neo-2.7B --screen --online
+./query_gpt_model.py EleutherAI/gpt-neo-2.7B --screen --online --tabname safe
 
 
 fi
