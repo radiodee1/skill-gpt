@@ -26,16 +26,16 @@ if [ $1 == "--safe" ]; then
 
 
 echo EleutherAI/gpt-neo-125M 
-./count_gpt_output.py EleutherAI/gpt-neo-125M --screen
+./count_gpt_output.py EleutherAI/gpt-neo-125M --screen --tabname safe 
 
 ## 1.3B
 echo EleutherAI/gpt-neo-1.3B
-./count_gpt_output.py EleutherAI/gpt-neo-1.3B --screen
+./count_gpt_output.py EleutherAI/gpt-neo-1.3B --screen --tabname safe
 
 ## 2.7B
 echo EleutherAI/gpt-neo-2.7B
-./count_gpt_output.py EleutherAI/gpt-neo-2.7B --screen --online
+./count_gpt_output.py EleutherAI/gpt-neo-2.7B --screen --online --tabname safe
 
-./total_count_overall.py --screen --model_list EleutherAI/gpt-neo-125M,EleutherAI/gpt-neo-1.3B,EleutherAI/gpt-neo-2.7B
+./total_count_overall.py --screen --model_list EleutherAI/gpt-neo-125M,EleutherAI/gpt-neo-1.3B,EleutherAI/gpt-neo-2.7B --tabname safe
 
 fi

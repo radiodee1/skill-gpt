@@ -3,7 +3,10 @@ cd ./src/
 #echo $@
 
 if [ $1 == "--test" ]; then
-./query_gpt_model.py EleutherAI/gpt-neo-2.7B --screen --online
+
+#touch ../data/test.tsv
+
+./query_gpt_model.py EleutherAI/gpt-neo-2.7B --screen --online  --tabname test 
 
 echo test 
 

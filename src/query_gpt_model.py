@@ -134,6 +134,7 @@ class GPTPipeline(DefaultGPT):
 
         self.config = dotenv_values("../.env")
         #print(self.config)
+
         self.url = 'https://api.pipeline.ai/v2/runs'
     def setup(self):
         pass
@@ -211,7 +212,7 @@ class HFOnline(DefaultGPT):
         #openai.api_key = self.config["OPENAI_API_KEY"]
         self.bearer = self.config["HF_BEARER"]
         self.headers = {"Authorization": "Bearer " + self.bearer}
-        #print(self.bearer)
+        #print(self.model,"untouched")
 
     def setup(self):
         pass
@@ -219,9 +220,7 @@ class HFOnline(DefaultGPT):
     def get_response(self):
         payload = { "inputs": self.input_line } #, config : {"max_length": 5 , "temperature": 0.00001}}
         response = requests.post(self.API_URL, headers=self.headers, json=payload)
-	    #return response.json()
 
-        #print(response.json() , "<---")
         gen_text = response.json()[0]["generated_text"].replace("\n","").strip()
         if gen_text.startswith(self.input_line):
             gen_text = gen_text[len(self.input_line):]
@@ -293,18 +292,21 @@ if __name__ == "__main__":
         print(args.model, "Huggingface online")
         try:
             gpt = HFOnline(args.model)
-        except:
+        except Exception as e:
+            print(e)
             skip = True 
 
 
     gpt.setup()
 
     #print(gpt.model)
-    print(gpt.file_name)
+    print("names:", gpt.file_name, args.tabname)
+
+    gpt.file_name = gpt.file_name.replace("/",".")
     
     if not exists("../data/" + gpt.file_name):
-        save = open("../data/" + gpt.file_name, "w")
-        file = open("../data/" + args.tabname, "r")
+        save = open("../data/" + gpt.file_name.replace("/","."), "w")
+        file = open("../data/" + args.tabname.replace("/","."), "r")
         j = []
         num = 0
         for l in file:
@@ -339,7 +341,8 @@ if __name__ == "__main__":
                         l[1] = ""
                         skip = True
                     '''
-                    except :
+                    except Exception as e :
+                        print(e)
                         l[1] = ""
                         if not gpt.is_online: skip = True
                         crash_count += 1 
