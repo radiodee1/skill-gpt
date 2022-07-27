@@ -219,6 +219,8 @@ class HFOnline(DefaultGPT):
 
     def get_response(self):
         payload = { "inputs": self.input_line } #, config : {"max_length": 5 , "temperature": 0.00001}}
+        #print(payload)
+
         response = requests.post(self.API_URL, headers=self.headers, json=payload)
 
         gen_text = response.json()[0]["generated_text"].replace("\n","").strip()
