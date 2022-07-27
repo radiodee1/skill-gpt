@@ -14,5 +14,6 @@ PIPELINE_MODEL_KEY_GPTJ=abcd...
 # this is for mystic.ai GPT-J
 
 HF_BEARER=abcd...
+# this is for Huggingface online models
 
 ```
