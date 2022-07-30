@@ -4,11 +4,14 @@ import argparse
 import sys
 from os.path import exists
 import requests
-import json 
+import json
+import os 
 
 import openai 
 from dotenv import dotenv_values
 from requests.api import options
+
+from happytransformer import HappyGeneration, GENSettings
 
 from transformers import GPTJForCausalLM, AutoTokenizer, AutoModelForCausalLM
 import torch
@@ -230,6 +233,34 @@ class HFOnline(DefaultGPT):
         
         return gen_text
         
+class Checkpoint(DefaultGPT):
+    def __init__(self, model):
+        DefaultGPT.__init__(self)
+        self.model = model #"gpt3"
+        self.file_name = args.tabname.split('.')[0] + '.' + self.model.replace("/",".") + ".query.tsv"
+        self.input_line = "Hello there."
+        self.is_online = False
+
+        path = str(os.environ.get("GPT_ETC_CHECKPOINT"))
+        self.happy_gen = HappyGeneration( model_type="GPT-NEO", model_name=self.model, load_path=path )
+
+
+    def setup(self):
+        pass
+
+    def get_response(self):
+        args = GENSettings(max_length=15)
+        result = self.happy_gen.generate_text(self.input_line, args=args)    
+        print(result)
+        print(result.text)  
+        gen_text = result.text.strip()
+
+        if gen_text.startswith(self.input_line):
+            gen_text = gen_text[len(self.input_line):]
+        gen_text = gen_text.strip()
+        
+        return gen_text
+
 
 if __name__ == "__main__":
     skip = False
