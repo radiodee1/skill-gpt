@@ -39,3 +39,13 @@ echo EleutherAI/gpt-neo-2.7B
 ./total_count_overall.py --screen --model_list EleutherAI/gpt-neo-125M,EleutherAI/gpt-neo-1.3B,EleutherAI/gpt-neo-2.7B --tabname safe
 
 fi
+
+if [ $1 == "--check" ]; then
+
+./count_gpt_output.py EleutherAI/gpt-neo-125M --screen --online --tabname check
+
+./total_count_overall.py --screen --model_list EleutherAI/gpt-neo-125M --tabname check
+
+fi
+
+

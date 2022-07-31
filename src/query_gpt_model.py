@@ -7,7 +7,11 @@ import requests
 import json
 import os 
 
-import openai 
+try:
+    import openai 
+except:
+    pass 
+
 from dotenv import dotenv_values
 from requests.api import options
 
@@ -243,6 +247,7 @@ class Checkpoint(DefaultGPT):
         self.is_online = False
 
         path = str(os.environ.get("GPT_ETC_CHECKPOINT"))
+        print(path)
         self.happy_gen = HappyGeneration( model_type="GPT-NEO", model_name=self.model, load_path=path )
 
 

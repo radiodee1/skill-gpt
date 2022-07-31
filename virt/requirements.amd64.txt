@@ -16,14 +16,14 @@ filelock==3.0.12
 idna==2.10
 importlib_metadata==4.0.1 
 jmespath==0.10.0 
-joblib==1.0.1
+joblib==1.1.0
 happytransformer==2.4.1 
 
 numpy==1.22.4 
 
 packaging==20.9 
 pyparsing==2.4.7 
-python_aiml==0.9.3 
+# python_aiml==0.9.3 
 python_dateutil==2.8.1 
 regex==2021.4.4
 requests==2.25.1 
@@ -45,10 +45,10 @@ zipp==3.4.1
 python-dotenv
 # ==0.17.1
 
-transformers
+transformers==4.19.4
 # ==4.11.3
 
-openai==0.20.0
+#openai==0.20.0
 
 #pipeline-ai
 

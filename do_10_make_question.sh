@@ -18,3 +18,9 @@ if [ $1 == "--test" ]; then
 ./convert_dialog_tab.py ../raw/movie_lines.txt --do_format --tabname test 
 
 fi
+
+if [ $1 == "--check" ]; then
+
+./convert_dialog_tab.py ../raw/movie_lines.txt --do_format --tabname check
+
+fi

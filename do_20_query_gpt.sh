@@ -12,6 +12,16 @@ echo test
 
 fi
 
+if [ $1 == "--check" ]; then
+
+#touch ../data/test.tsv
+
+./query_gpt_model.py EleutherAI/gpt-neo-125M --screen --online --checkpoint --tabname check 
+
+echo check 
+
+fi
+
 
 if [ $1 == "--mixed" ]; then
 

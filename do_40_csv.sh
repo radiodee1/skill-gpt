@@ -17,3 +17,9 @@ if [ $1 == "--test" ]; then
 ./make_csv.py --tabname test
 
 fi
+
+if [ $1 == "--check" ]; then
+
+./make_csv.py --tabname check
+
+fi
