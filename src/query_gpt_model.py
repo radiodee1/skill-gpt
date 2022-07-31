@@ -247,7 +247,7 @@ class Checkpoint(DefaultGPT):
         self.is_online = False
 
         path = str(os.environ.get("GPT_ETC_CHECKPOINT"))
-        print(path)
+        #print(path)
         self.happy_gen = HappyGeneration( model_type="GPT-NEO", model_name=self.model, load_path=path )
 
 
@@ -257,8 +257,8 @@ class Checkpoint(DefaultGPT):
     def get_response(self):
         args = GENSettings(max_length=15)
         result = self.happy_gen.generate_text(self.input_line, args=args)    
-        print(result)
-        print(result.text)  
+        #print(result)
+        #print(result.text)  
         gen_text = result.text.strip()
 
         if gen_text.startswith(self.input_line):

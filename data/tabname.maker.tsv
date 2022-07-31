@@ -1,2 +1,0 @@
-percent-of-input-covered:	436/1000	number-of-inputs-covered:	436	number-of-tests:	1000	number-of-special-replies:	77	model-name:	EleutherAI/gpt-neo-125M	tabname.EleutherAI/gpt-neo-125M.compare.tsv = 436/1000
-percent-of-input-covered:	359/1000	number-of-inputs-covered:	359	number-of-tests:	1000	number-of-special-replies:	73	model-name:	EleutherAI/gpt-neo-1.3B	tabname.EleutherAI/gpt-neo-1.3B.compare.tsv = 359/1000
