@@ -33,6 +33,7 @@ parser.add_argument("--screen", action="store_true", help="Print verbose output 
 parser.add_argument("--crashes", default=5, type=int, help="Number of model crashes before skipping all model inputs.")
 parser.add_argument("--huggingface", default=None, type=str, help="Huggingface model to run in place of gpt2.")
 parser.add_argument("--online", action="store_true", help="Use online service for GPT Huggingface.")
+parser.add_argument("--checkpoint", action="store_true", help="Use stored GPT-NEO checkpoint.")
 args = parser.parse_args()
 
 
@@ -319,6 +320,12 @@ if __name__ == "__main__":
         print(args.model, "model using GPT2 framework and Huggingface")
         try:
             gpt = GPT2(args.model)
+        except:
+            skip = True
+    elif args.checkpoint is True:
+        print(args.model, "checkpoint")
+        try:
+            gpt = Checkpoint(args.model)
         except:
             skip = True
     else:
