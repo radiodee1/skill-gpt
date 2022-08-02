@@ -33,3 +33,12 @@ zip ${NAME}check.zip check*
 mv ${NAME}check.zip ..
 
 fi
+
+if [ $1 == "--test" ]; then
+
+echo $NAME
+
+zip ${NAME}test.zip test*
+mv ${NAME}test.zip ..
+
+fi
