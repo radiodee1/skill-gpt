@@ -1,8 +1,10 @@
-rm ./data/tabname.maker.tsv
+#rm ./data/tabname.maker.tsv
 
 cd src
 
 if [ $1 == "--mixed" ]; then
+
+rm ./data/tabname.maker.tsv
 
 ./count_gpt_output.py gpt2 --screen 
 
@@ -42,9 +44,9 @@ fi
 
 if [ $1 == "--check" ]; then
 
-./count_gpt_output.py EleutherAI/gpt-neo-125M --screen  --tabname check
+./count_gpt_output.py EleutherAI/gpt-neo-1.3B --screen  --tabname check
 
-./total_count_overall.py --screen --model_list EleutherAI/gpt-neo-125M --tabname check
+./total_count_overall.py --screen --model_list EleutherAI/gpt-neo-1.3B --tabname check
 
 fi
 

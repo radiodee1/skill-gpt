@@ -16,7 +16,7 @@ if [ $1 == "--check" ]; then
 
 #touch ../data/test.tsv
 
-./query_gpt_model.py EleutherAI/gpt-neo-125M --screen --online --checkpoint --tabname check 
+./query_gpt_model.py EleutherAI/gpt-neo-1.3B --screen --online --checkpoint --tabname check 
 
 echo check 
 

@@ -1,6 +1,8 @@
 tabname.txt
 tabname.tsv
 *.tsv
+*.txt
+*.zip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
