@@ -6,7 +6,7 @@ if [ $1 == "--test" ]; then
 
 #touch ../data/test.tsv
 
-./query_gpt_model.py EleutherAI/gpt-neo-2.7B --screen --online  --tabname test 
+./query_gpt_model.py EleutherAI/gpt-neo-125M --screen --online  --tabname test 
 
 echo test 
 

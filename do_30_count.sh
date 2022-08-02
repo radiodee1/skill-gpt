@@ -51,3 +51,11 @@ if [ $1 == "--check" ]; then
 fi
 
 
+if [ $1 == "--test" ]; then
+
+./count_gpt_output.py EleutherAI/gpt-neo-125M --screen  --tabname test
+
+./total_count_overall.py --screen --model_list EleutherAI/gpt-neo-125M --tabname test
+
+fi
+
