@@ -36,7 +36,7 @@ echo EleutherAI/gpt-neo-1.3B
 
 ## 2.7B
 echo EleutherAI/gpt-neo-2.7B
-./count_gpt_output.py EleutherAI/gpt-neo-2.7B --screen --online --tabname safe
+./count_gpt_output.py EleutherAI/gpt-neo-2.7B --screen --tabname safe
 
 ./total_count_overall.py --screen --model_list EleutherAI/gpt-neo-125M,EleutherAI/gpt-neo-1.3B,EleutherAI/gpt-neo-2.7B --tabname safe
 

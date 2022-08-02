@@ -381,7 +381,7 @@ if __name__ == "__main__":
                     try:
                         gpt.input_line = l[0]
                         l[1] = gpt.get_response()
-                        l[1] = l[1].replace("\n","").replace("\r","")
+                        l[1] = l[1].replace("\n","").replace("\r","").replace("\t", "")[0:20]
                     except  KeyboardInterrupt:
                         l[1] = ""
                         skip = True

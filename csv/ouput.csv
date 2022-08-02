@@ -1,7 +1,0 @@
-gpt2,124M,WebText,40G,395,1000,80
-gpt2-medium,355M,WebText,40G,322,1000,84
-gpt2-large,774M,WebText,40G,333,1000,81
-gpt2-xl,1.5B,WebText,40G,324,1000,82
-gptj-pipeline,6B,ThePile,800G,348,1000,66
-gpt3-curie,6.7B,CommonCrawl,240T,291,1000,62
-gpt3,175B,CommonCrawl,240T,316,1000,65
