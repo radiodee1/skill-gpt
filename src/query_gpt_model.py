@@ -385,7 +385,7 @@ if __name__ == "__main__":
                     except  KeyboardInterrupt:
                         l[1] = ""
                         skip = True
-                    '''
+                    
                     except Exception as e :
                         print(e)
                         l[1] = ""
@@ -393,7 +393,7 @@ if __name__ == "__main__":
                         crash_count += 1 
                         if crash_count >= args.crashes: 
                             skip = True
-                    '''
+                    
                 else:
                     l[1] = ""
                 
