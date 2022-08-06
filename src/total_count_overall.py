@@ -27,11 +27,13 @@ if __name__ == "__main__":
     models = args.model_list.split(",")
     for i in range(len(models)):
         #line_j = []
-        ii = models[i]
+        ii = models[i].replace("/",".")
         file_name_in =  args.tabname.split('.')[0] + '.' + ii + ".compare.tsv"
-        if exists("../data/" + file_name_in):
+        if exists("../data/" + file_name_in.replace("/", ".")):
+            print(file_name_in, "file_name_in")
+            #exit()
             file_name_out += ii + "_"
-            file = open("../data/" + file_name_in.replace("/","."), "r")
+            file = open("../data/" + file_name_in, "r")
             if args.num_repeats == -1: repeats += 1 
             for j in file:
                 jj = j.split("\t")
@@ -54,7 +56,7 @@ if __name__ == "__main__":
         if engine_record[k][3] >= repeats:
             engine_visual.append([ engine_record[k][3], engine_record[k][1], engine_record[k][2] ])
             print(engine_record[k][3], engine_record[k][1], engine_record[k][2])
-    print(len(engine_visual))
+    print(len(engine_visual), repeats)
 
     file_name_out += str(len(engine_visual)) + ".totals.tsv"
     print(file_name_out)
