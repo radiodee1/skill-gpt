@@ -53,11 +53,12 @@ if __name__ == "__main__":
         pass
     if args.screen: print("---")
     if args.num_repeats != -1: repeats = args.num_repeats
+
     for k in range(len(engine_record)):
         if engine_record[k][3] >= repeats:
             engine_visual.append([ engine_record[k][3], engine_record[k][1], engine_record[k][2] ])
             print(engine_record[k][3], engine_record[k][1], engine_record[k][2])
-    print(len(engine_visual), repeats)
+    print(len(engine_visual), repeats, len(models))
 
     file_name_out += str(len(engine_visual)) + ".totals.tsv"
     print(file_name_out)
